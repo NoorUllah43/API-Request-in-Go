@@ -3,6 +3,7 @@ package routes
 import (
 	"fmt"
 	"os"
+
 	"github.com/gofiber/fiber/v3"
 )
 
@@ -25,9 +26,9 @@ func filehandler(ctx fiber.Ctx) error {
 		return err
 	}
 
-	readfile, ferr := os.ReadFile("./uploads/file.txt")
-	if ferr != nil {
-		panic(ferr)
+	readfile, err := os.ReadFile("./uploads/file.txt")
+	if err != nil {
+		panic(err)
 	}
 
 	fileContent := string(readfile)
