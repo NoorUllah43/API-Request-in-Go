@@ -3,16 +3,17 @@ package routes
 import (
 	"fmt"
 	"os"
-
 	"github.com/gofiber/fiber/v3"
 )
-
+// api endpoint
 func Routes(app *fiber.App) {
 
 	app.Post("/uploadfile", filehandler)
 
 }
 
+
+// api handler
 func filehandler(ctx fiber.Ctx) error {
 
 	file, err := ctx.FormFile("file")
@@ -38,6 +39,9 @@ func filehandler(ctx fiber.Ctx) error {
 	return ctx.JSON(data)
 
 }
+
+
+
 
 func analyze(str string) map[string]int {
 
