@@ -9,7 +9,7 @@ import (
 )
 
 func ConnectPostgresqlDB() {
-	connectionString := fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=disable", os.Getenv("DB_HOST"),os.Getenv("DB_PORT"),os.Getenv("DB_USERNAME"),os.Getenv("DB_PASSWORD"),os.Getenv("DB_NAME"))
+	connectionString := fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=disable", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
 	db, err := sql.Open("postgres", connectionString)
 
 	if err != nil {
@@ -17,6 +17,11 @@ func ConnectPostgresqlDB() {
 	}
 
 	fmt.Println("Database connected")
+
+	insertdata := `insert into "employees" ("name", "password") values ('noor', 32)`
+	db.Exec(insertdata)
 	
+
 	defer db.Close()
 }
+
