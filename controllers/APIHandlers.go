@@ -62,24 +62,31 @@ func RegisterUser(ctx fiber.Ctx) error {
 	}
 
 	db.InsertUser(user)
-	
+
 	return ctx.JSON(token)
 }
 
-
 func Login(ctx fiber.Ctx) error {
 	var credentials models.UserCredentials
+	var email string
+	var password string
 
 	err := json.Unmarshal(ctx.Body(), &credentials)
 	if err != nil {
 		return err
 	}
-	token, err := middleware.CreateToken(credentials.Email)
+
+
+	email, password, err = db.FindUser(credentials)
 	if err != nil {
-		return err
+		
+		return ctx.JSON(`Unautherize please provide correct email and password`)
+	}
+	if email != credentials.Email && password != credentials.Password {
+		return ctx.JSON(`unautherize please provide correct email and password`)
 	}
 
-	err = db.FindUser(credentials)
+	token, err := middleware.CreateToken(credentials.Email)
 	if err != nil {
 		return err
 	}
@@ -87,7 +94,6 @@ func Login(ctx fiber.Ctx) error {
 	return ctx.JSON(token)
 
 }
-
 
 func analyze(str string) map[string]int {
 
