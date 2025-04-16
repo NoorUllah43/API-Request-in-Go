@@ -1,4 +1,5 @@
-package config
+package db
+
 
 import (
 	"database/sql"
@@ -19,8 +20,7 @@ func ConnectPostgresqlDB() {
 
 	fmt.Println("Database connected")
 
-	DB = db
+	DB = db 
 
 	
 }
-
