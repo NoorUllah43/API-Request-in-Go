@@ -7,6 +7,7 @@ import (
 
 	_ "github.com/lib/pq"
 )
+var DB *sql.DB
 
 func ConnectPostgresqlDB() {
 	connectionString := fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=disable", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
@@ -18,10 +19,8 @@ func ConnectPostgresqlDB() {
 
 	fmt.Println("Database connected")
 
-	insertdata := `insert into "employees" ("name", "password") values ('noor', 32)`
-	db.Exec(insertdata)
-	
+	DB = db
 
-	defer db.Close()
+	
 }
 

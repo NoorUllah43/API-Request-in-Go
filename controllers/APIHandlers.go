@@ -4,10 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"time"
+
+	"github.com/NoorUllah43/API-Request-in-Go/db"
+	"github.com/NoorUllah43/API-Request-in-Go/middleware"
 	"github.com/NoorUllah43/API-Request-in-Go/models"
 	"github.com/gofiber/fiber/v3"
-	"github.com/golang-jwt/jwt/v5"
+	_ "github.com/lib/pq"
 )
 
 func Filehandler(ctx fiber.Ctx) error {
@@ -17,9 +19,8 @@ func Filehandler(ctx fiber.Ctx) error {
 	if tokenstring == "" {
 		return ctx.JSON(`statuscode : 401, missing token`)
 	}
-	
 
-	err := verifytoken(tokenstring)
+	err := middleware.Verifytoken(tokenstring)
 	if err != nil {
 		return err
 	}
@@ -48,58 +49,45 @@ func Filehandler(ctx fiber.Ctx) error {
 
 }
 
-
-
-func Login(ctx fiber.Ctx) error {
-	var user models.Person
+func RegisterUser(ctx fiber.Ctx) error {
+	var user models.User
 
 	err := json.Unmarshal(ctx.Body(), &user)
 	if err != nil {
 		return err
 	}
-	token, err := createToken(user.Email)
+	token, err := middleware.CreateToken(user.Email)
 	if err != nil {
 		return err
 	}
 
-	return ctx.JSON(token) 
+	db.InsertUser(user)
+	
+	return ctx.JSON(token)
 }
 
 
+func Login(ctx fiber.Ctx) error {
+	var credentials models.UserCredentials
 
-
-
-var jwtsecretkey = []byte("thisisjwtkey")
-
-func createToken(useremail string) (string, error) {
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"useremail": useremail,
-		"exp":       time.Now().Add(time.Hour * 24).Unix(),
-	})
-
-	tokenstring, err := token.SignedString(jwtsecretkey)
+	err := json.Unmarshal(ctx.Body(), &credentials)
 	if err != nil {
-		return "", err
+		return err
 	}
-
-	return tokenstring, nil
-}
-
-func verifytoken(tokenstring string) error {
-	token, err := jwt.Parse(tokenstring, func(token *jwt.Token) (interface{}, error) {
-		return jwtsecretkey, nil
-	})
+	token, err := middleware.CreateToken(credentials.Email)
 	if err != nil {
 		return err
 	}
 
-	if !token.Valid {
-		return fmt.Errorf("invalid token")
+	err = db.FindUser(credentials)
+	if err != nil {
+		return err
 	}
+	
+	return ctx.JSON(token)
 
-	return nil
 }
+
 
 func analyze(str string) map[string]int {
 

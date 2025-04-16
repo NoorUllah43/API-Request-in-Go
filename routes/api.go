@@ -9,7 +9,8 @@ import (
 func Routes(app *fiber.App) {
 
 	app.Post("/uploadfile", controllers.Filehandler)
-	app.Post("auth/login", controllers.Login)
+	app.Post("/auth/login", controllers.Login)
+	app.Post("/auth/registerUser",controllers.RegisterUser)
 
 }
 

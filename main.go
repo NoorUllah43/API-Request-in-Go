@@ -14,12 +14,11 @@ func main() {
 	app := fiber.New()
 	err := godotenv.Load(".env")
 	if err != nil {
-		fmt.Println("loagin env err:",err)
+		fmt.Println("loagin env err:", err)
 	}
 
 	config.ConnectPostgresqlDB()
 
-	
 	routes.Routes(app)
 	log.Fatal(app.Listen(":3000"))
 }
