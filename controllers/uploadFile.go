@@ -9,10 +9,10 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
-
 func Filehandler(ctx fiber.Ctx) error {
 
 	tokenstring := ctx.Get("Authorization")
+
 
 	if tokenstring == "" {
 		return ctx.JSON(`statuscode : 401, missing token`)
@@ -30,7 +30,8 @@ func Filehandler(ctx fiber.Ctx) error {
 
 	fileLocation := fmt.Sprintf("./uploads/%v", file.Filename)
 
-	if err := ctx.SaveFile(file, fileLocation); err != nil {
+	err = ctx.SaveFile(file, fileLocation)
+	if err != nil {
 		return err
 	}
 

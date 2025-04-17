@@ -21,12 +21,14 @@ func RegisterUser(ctx fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
+
+	err = db.AddUser(user)
+	if err != nil {
+		return err
+	}
 	token, err := middleware.CreateToken(user.Email)
 	if err != nil {
 		return err
 	}
-
-	db.AddUser(user)
-
 	return ctx.JSON(token)
 }
