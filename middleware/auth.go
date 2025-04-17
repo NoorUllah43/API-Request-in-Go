@@ -1,13 +1,11 @@
 package middleware
 
 import (
-	"github.com/golang-jwt/jwt/v5"
-	"time"
 	"fmt"
+	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 )
-
-
 
 var jwtsecretkey = []byte("thisisjwtkey")
 

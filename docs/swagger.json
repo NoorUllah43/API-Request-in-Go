@@ -1,0 +1,40 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Golang Task",
+        "contact": {},
+        "version": "3.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "description": "using this route user will login",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "login user",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/auth/registerUser": {
+            "post": {
+                "description": "Using this route user will register in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Register user",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    }
+}

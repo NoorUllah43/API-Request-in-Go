@@ -9,6 +9,11 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
+// @Summary		Register user
+// @Description	Using this route user will register in the database
+// @Produce		json
+// @Success		200
+// @Router		/auth/registerUser [post]
 func RegisterUser(ctx fiber.Ctx) error {
 	var user models.User
 

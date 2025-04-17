@@ -5,23 +5,15 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
-// api endpoint
 func Routes(app *fiber.App) {
+
+	// api endpoints
+	app.Get("/", func(ctx fiber.Ctx) error {
+		return ctx.JSON("welcome to / route")
+	})
 
 	app.Post("/uploadfile", controllers.Filehandler)
 	app.Post("/auth/login", controllers.Login)
-	app.Post("/auth/registerUser",controllers.RegisterUser)
+	app.Post("/auth/registerUser", controllers.RegisterUser)
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

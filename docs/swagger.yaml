@@ -1,0 +1,26 @@
+basePath: /
+host: localhost:3000
+info:
+  contact: {}
+  title: Golang Task
+  version: "3.0"
+paths:
+  /auth/login:
+    post:
+      description: using this route user will login
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: login user
+  /auth/registerUser:
+    post:
+      description: Using this route user will register in the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Register user
+swagger: "2.0"

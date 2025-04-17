@@ -9,9 +9,11 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
-
-
-
+// @Summary		login user
+// @Description	using this route user will login
+// @Produce		json
+// @Success		200
+// @Router		/auth/login [post]
 func Login(ctx fiber.Ctx) error {
 	var credentials models.UserCredentials
 	var email string
@@ -22,10 +24,9 @@ func Login(ctx fiber.Ctx) error {
 		return err
 	}
 
-
 	email, password, err = db.FindUser(credentials)
 	if err != nil {
-		
+
 		return ctx.JSON(`Unautherize please provide correct email and password`)
 	}
 	if email != credentials.Email && password != credentials.Password {
@@ -36,7 +37,7 @@ func Login(ctx fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	
+
 	return ctx.JSON(token)
 
 }

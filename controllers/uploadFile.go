@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/NoorUllah43/API-Request-in-Go/db"
 	"github.com/NoorUllah43/API-Request-in-Go/middleware"
 	"github.com/gofiber/fiber/v3"
 )
+
 
 func Filehandler(ctx fiber.Ctx) error {
 
@@ -40,6 +42,11 @@ func Filehandler(ctx fiber.Ctx) error {
 	fileContent := string(readfile)
 
 	data := analyze(fileContent)
+
+	err = db.InsertResult(data)
+	if err != nil {
+		return err
+	}
 
 	return ctx.JSON(data)
 

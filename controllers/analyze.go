@@ -1,7 +1,5 @@
 package controllers
 
-
-
 func analyze(str string) map[string]int {
 
 	chunkeData := make(map[string]int)

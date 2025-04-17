@@ -1,6 +1,5 @@
 package db
 
-
 import (
 	"database/sql"
 	"fmt"
@@ -8,6 +7,7 @@ import (
 
 	_ "github.com/lib/pq"
 )
+
 var DB *sql.DB
 
 func ConnectPostgresqlDB() {
@@ -20,7 +20,6 @@ func ConnectPostgresqlDB() {
 
 	fmt.Println("Database connected")
 
-	DB = db 
+	DB = db
 
-	
 }
