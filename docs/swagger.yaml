@@ -1,4 +1,21 @@
 basePath: /
+definitions:
+  models.User:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  models.UserCredentials:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
 host: localhost:3000
 info:
   contact: {}
@@ -7,20 +24,47 @@ info:
 paths:
   /auth/login:
     post:
-      description: using this route user will login
+      consumes:
+      - application/json
+      description: Logs in a user using email and password, returns JWT token on success.
+      parameters:
+      - description: User Email and Password
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserCredentials'
       produces:
       - application/json
       responses:
         "200":
           description: OK
-      summary: login user
+        "401":
+          description: Unauthorized
+      summary: Login User
+      tags:
+      - Auth
   /auth/registerUser:
     post:
-      description: Using this route user will register in the database
+      consumes:
+      - application/json
+      description: Register user using name, email and password, returns JWT token
+        on success.
+      parameters:
+      - description: User Name, Email and Password
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
       produces:
       - application/json
       responses:
         "200":
           description: OK
-      summary: Register user
+        "401":
+          description: Unauthorized
+      summary: Register User
+      tags:
+      - Auth
 swagger: "2.0"

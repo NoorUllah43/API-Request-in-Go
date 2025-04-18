@@ -8,6 +8,8 @@ import (
 	"github.com/NoorUllah43/API-Request-in-Go/db"
 	_ "github.com/NoorUllah43/API-Request-in-Go/docs"
 	"github.com/NoorUllah43/API-Request-in-Go/routes"
+
+	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/gofiber/fiber/v3"
 	"github.com/joho/godotenv"
 )
@@ -29,5 +31,12 @@ func main() {
 	db.ConnectPostgresqlDB()
 
 	routes.Routes(app)
+
+    app.Use(cors.New(cors.Config{
+        AllowOrigins: []string{"*"}, 
+        AllowHeaders: []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		AllowMethods: []string{"GET", "POST", "HEAD", "PUT", "DELETE", "PATCH", "OPTIONS"},
+    }))
+
 	log.Fatal(app.Listen(":3000"))
 }

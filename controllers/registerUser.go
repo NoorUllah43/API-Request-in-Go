@@ -9,11 +9,17 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
-// @Summary		Register user
-// @Description	Using this route user will register in the database
-// @Produce		json
-// @Success		200
-// @Router		/auth/registerUser [post]
+// RegisterUser godoc
+// @Summary      Register User
+// @Description  Register user using name, email and password, returns JWT token on success.
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @scheme		 http
+// @Param        credentials  body      models.User  true  "User Name, Email and Password"
+// @Success      200
+// @Failure      401
+// @Router       /auth/registerUser [post]
 func RegisterUser(ctx fiber.Ctx) error {
 	var user models.User
 
@@ -22,13 +28,16 @@ func RegisterUser(ctx fiber.Ctx) error {
 		return err
 	}
 
-	err = db.AddUser(user)
+	userID, err := db.AddUser(user)
 	if err != nil {
 		return err
 	}
-	token, err := middleware.CreateToken(user.Email)
+	token, err := middleware.CreateToken(userID)
 	if err != nil {
 		return err
 	}
-	return ctx.JSON(token)
+	response := fiber.Map{
+		"token": token,
+	}
+	return ctx.JSON(response)
 }

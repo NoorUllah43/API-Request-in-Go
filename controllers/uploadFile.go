@@ -18,10 +18,12 @@ func Filehandler(ctx fiber.Ctx) error {
 		return ctx.JSON(`statuscode : 401, missing token`)
 	}
 
-	err := middleware.Verifytoken(tokenstring)
+	userID, err := middleware.Verifytoken(tokenstring)
 	if err != nil {
 		return err
 	}
+
+	
 
 	file, err := ctx.FormFile("file")
 	if err != nil {
@@ -44,7 +46,7 @@ func Filehandler(ctx fiber.Ctx) error {
 
 	data := analyze(fileContent)
 
-	err = db.InsertResult(data)
+	err = db.InsertResult(data,userID)
 	if err != nil {
 		return err
 	}

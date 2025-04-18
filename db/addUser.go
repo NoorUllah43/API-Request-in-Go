@@ -1,19 +1,30 @@
 package db
 
 import (
-	"fmt"
-
 	"github.com/NoorUllah43/API-Request-in-Go/models"
 )
 
-func AddUser(userdata models.User) error {
+func AddUser(userdata models.User) (int, error) {
 
-	createUser := fmt.Sprintf(`INSERT INTO
-	users (name, email, password)
-	VALUES ('%v','%v','%v')`,
-		userdata.Name, userdata.Email, userdata.Password,
-	)
-	DB.QueryRow(createUser)
+	query :=
+		`INSERT INTO
+	  users (name, email, password)
+	VALUES
+	  ($1, $2, $3)
+	RETURNING id`
 
-	return nil
+	stmt, err := DB.Prepare(query)
+	if err != nil {
+		return 0, err
+	}
+	defer stmt.Close()
+
+	var userID int
+
+	err = stmt.QueryRow(userdata.Name, userdata.Email, userdata.Password).Scan(&userID)
+	if err != nil {
+		return 0, err
+	}
+
+	return userID, nil
 }
