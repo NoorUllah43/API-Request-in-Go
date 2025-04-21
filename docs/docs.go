@@ -85,7 +85,12 @@ const docTemplate = `{
         },
         "/getUserData": {
             "get": {
-                "description": "Get data which is store by by user, return data as json",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieves data stored by the user and returns it as JSON.",
                 "produces": [
                     "application/json"
                 ],
@@ -95,7 +100,10 @@ const docTemplate = `{
                 "summary": "Get User Data",
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResultData"
+                        }
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -103,22 +111,95 @@ const docTemplate = `{
                 }
             }
         },
-        "/uploadfile": {
-            "post": {
-                "description": "Upload a file to analyze, return json",
-                "consumes": [
-                    "multipart/form-data"
+        "/getUserData/{page}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
                 ],
+                "description": "Retrieves user data by page number. Returns paginated JSON data.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "User"
                 ],
-                "summary": "Upload a file",
+                "summary": "Get User Data (Paginated)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid page number",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/uploadfile": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Uploads a file via multipart/form‑data and returns its metadata.",
+                "consumes": [
+                    "multipart/form‑data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "File"
+                ],
+                "summary": "Upload a File",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Select file to upload",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResultData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -128,6 +209,38 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.ResultData": {
+            "type": "object",
+            "properties": {
+                "digits": {
+                    "type": "integer"
+                },
+                "lines": {
+                    "type": "integer"
+                },
+                "paragraph": {
+                    "type": "integer"
+                },
+                "punctuation": {
+                    "type": "integer"
+                },
+                "spaces": {
+                    "type": "integer"
+                },
+                "specialcharacters": {
+                    "type": "integer"
+                },
+                "symboles": {
+                    "type": "integer"
+                },
+                "vowels": {
+                    "type": "integer"
+                },
+                "words": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.User": {
             "type": "object",
             "properties": {
@@ -153,14 +266,21 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "3.0",
+	Version:          "2.0",
 	Host:             "localhost:3000",
-	BasePath:         "/",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Golang Task",
 	Description:      "",

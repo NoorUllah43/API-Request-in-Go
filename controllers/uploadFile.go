@@ -9,17 +9,18 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
-// Filehandler godoc
-// @Summary      Upload a file
-// @Description  Upload a file to analyze, return json
-// @Tags         User
-// @Accept       multipart/form-data
+
+// UploadFile godoc
+// @Summary      Upload a File
+// @Description  Uploads a file via multipart/form‑data and returns its metadata.
+// @Tags         File
+// @Accept       multipart/form‑data
 // @Produce      json
-// @host 		 localhost:3000
-// @BasePath 	 /
-// @scheme		 http
-// @Success      200
-// @Failure      401
+// @Param        file           formData  file    true  "Select file to upload"
+// @Security     ApiKeyAuth
+// @Success      200   	 {object}   models.ResultData
+// @Failure      400    
+// @Failure      401       
 // @Router       /uploadfile [post]
 func Filehandler(ctx fiber.Ctx) error {
 

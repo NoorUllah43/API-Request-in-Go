@@ -2,13 +2,17 @@ package db
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/NoorUllah43/API-Request-in-Go/models"
 )
 
 func GetPagenationData(userID int, limitdata string) ([]models.ResultData, error) {
 
-	
+	pagenum, err := strconv.Atoi(limitdata)
+	if err != nil {
+		return []models.ResultData{}, err
+	}
 
 	quray := fmt.Sprintf(`SELECT 
 	words, 
@@ -19,7 +23,7 @@ func GetPagenationData(userID int, limitdata string) ([]models.ResultData, error
 	specialcharacters,
 	symboles,
 	digits,
-	lines FROM result WHERE id=$1 LIMIT %v OFFSET 0`, limitdata)
+	lines FROM result WHERE id=$1 LIMIT %v OFFSET 0`, pagenum)
 
 	var userData []models.ResultData
 

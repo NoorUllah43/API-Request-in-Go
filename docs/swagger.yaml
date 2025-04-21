@@ -1,5 +1,25 @@
-basePath: /
 definitions:
+  models.ResultData:
+    properties:
+      digits:
+        type: integer
+      lines:
+        type: integer
+      paragraph:
+        type: integer
+      punctuation:
+        type: integer
+      spaces:
+        type: integer
+      specialcharacters:
+        type: integer
+      symboles:
+        type: integer
+      vowels:
+        type: integer
+      words:
+        type: integer
+    type: object
   models.User:
     properties:
       email:
@@ -20,7 +40,7 @@ host: localhost:3000
 info:
   contact: {}
   title: Golang Task
-  version: "3.0"
+  version: "2.0"
 paths:
   /auth/login:
     post:
@@ -69,30 +89,85 @@ paths:
       - Auth
   /getUserData:
     get:
-      description: Get data which is store by by user, return data as json
+      description: Retrieves data stored by the user and returns it as JSON.
       produces:
       - application/json
       responses:
         "200":
           description: OK
+          schema:
+            $ref: '#/definitions/models.ResultData'
         "401":
           description: Unauthorized
+      security:
+      - ApiKeyAuth: []
       summary: Get User Data
+      tags:
+      - User
+  /getUserData/{page}:
+    get:
+      description: Retrieves user data by page number. Returns paginated JSON data.
+      parameters:
+      - description: Page number
+        in: path
+        name: page
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid page number
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Get User Data (Paginated)
       tags:
       - User
   /uploadfile:
     post:
       consumes:
-      - multipart/form-data
-      description: Upload a file to analyze, return json
+      - multipart/form‑data
+      description: Uploads a file via multipart/form‑data and returns its metadata.
+      parameters:
+      - description: Select file to upload
+        in: formData
+        name: file
+        required: true
+        type: file
       produces:
       - application/json
       responses:
         "200":
           description: OK
+          schema:
+            $ref: '#/definitions/models.ResultData'
+        "400":
+          description: Bad Request
         "401":
           description: Unauthorized
-      summary: Upload a file
+      security:
+      - ApiKeyAuth: []
+      summary: Upload a File
       tags:
-      - User
+      - File
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

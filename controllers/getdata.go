@@ -1,25 +1,20 @@
 package controllers
 
 import (
-
 	"github.com/NoorUllah43/API-Request-in-Go/db"
 	"github.com/NoorUllah43/API-Request-in-Go/middleware"
 	"github.com/gofiber/fiber/v3"
 )
 
-
-
 // GetUserData godoc
 // @Summary      Get User Data
-// @Description  Get data which is store by by user, return data as json
+// @Description  Retrieves data stored by the user and returns it as JSON.
 // @Tags         User
+// @Security     ApiKeyAuth
 // @Produce      json
-// @host 		 localhost:3000
-// @BasePath 	 /
-// @scheme		 http
-// @Success      200
-// @Failure      401
-// @Router       /getUserData [Get]
+// @Success      200 {object} models.ResultData
+// @Failure      401 
+// @Router       /getUserData [get]
 func GetUserData(ctx fiber.Ctx) error {
 	tokenstring := ctx.Get("Authorization")
 
@@ -32,11 +27,10 @@ func GetUserData(ctx fiber.Ctx) error {
 		return err
 	}
 
-
 	userData, err := db.FindUserData(userID)
 	if err != nil {
 		return err
 	}
-	
+
 	return ctx.JSON(userData)
 }
