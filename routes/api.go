@@ -12,10 +12,11 @@ func Routes(app *fiber.App) {
 		return ctx.JSON("welcome to / route")
 	})
 
-	app.Post("/uploadfile", controllers.Filehandler)
 	app.Post("/auth/login", controllers.Login)
 	app.Post("/auth/registerUser", controllers.RegisterUser)
+	app.Post("/uploadfile", controllers.Filehandler)
 
 	app.Get("/getUserData", controllers.GetUserData)
+	app.Get("/getUserData/:page", controllers.Pagenation)
 
 }

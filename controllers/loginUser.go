@@ -32,11 +32,11 @@ func Login(ctx fiber.Ctx) error {
 
 	email, password, userID, err := db.FindUser(credentials)
 	if err != nil {
-		return ctx.JSON(`unautherize please provide correct email and password`)
+		return ctx.Status(401).JSON(`unautherize please provide correct email and password`)
 	}
 	
 	if email != credentials.Email && password != credentials.Password {
-		return ctx.JSON(`unautherize please provide correct email and password`)
+		return ctx.Status(401).JSON(`unautherize please provide correct email and password`)
 	}
 	fmt.Println(userID)
 

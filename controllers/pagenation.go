@@ -1,26 +1,12 @@
 package controllers
 
 import (
-
 	"github.com/NoorUllah43/API-Request-in-Go/db"
 	"github.com/NoorUllah43/API-Request-in-Go/middleware"
 	"github.com/gofiber/fiber/v3"
 )
 
-
-
-// GetUserData godoc
-// @Summary      Get User Data
-// @Description  Get data which is store by by user, return data as json
-// @Tags         User
-// @Produce      json
-// @host 		 localhost:3000
-// @BasePath 	 /
-// @scheme		 http
-// @Success      200
-// @Failure      401
-// @Router       /getUserData [Get]
-func GetUserData(ctx fiber.Ctx) error {
+func Pagenation(ctx fiber.Ctx) error {
 	tokenstring := ctx.Get("Authorization")
 
 	if tokenstring == "" {
@@ -31,12 +17,12 @@ func GetUserData(ctx fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
+	page := ctx.Params("page")
 
-
-	userData, err := db.FindUserData(userID)
+	userData, err := db.GetPagenationData(userID, page)
 	if err != nil {
 		return err
 	}
-	
+
 	return ctx.JSON(userData)
 }
