@@ -14,15 +14,14 @@ import (
 // @Security     ApiKeyAuth
 // @Param        page path int true "Page number"
 // @Produce      json
-// @Success      200 {object} map[string]interface{}
-// @Failure      400 {object} map[string]string "Invalid page number"
-// @Failure      401 {object} map[string]string "Unauthorized"
+// @Success      200 {array}     models.ResultData
+// @Failure      401 {string}    "Unauthorized"
 // @Router       /getUserData/{page} [get]
 func Pagenation(ctx fiber.Ctx) error {
 	tokenstring := ctx.Get("Authorization")
 
 	if tokenstring == "" {
-		return ctx.Status(401).JSON(`missing token`)
+		return ctx.Status(401).JSON(`Unauthorized`)
 	}
 
 	userID, err := middleware.Verifytoken(tokenstring)

@@ -119,20 +119,13 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: Invalid page number
-          schema:
-            additionalProperties:
-              type: string
-            type: object
+            items:
+              $ref: '#/definitions/models.ResultData'
+            type: array
         "401":
           description: Unauthorized
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            type: string
       security:
       - ApiKeyAuth: []
       summary: Get User Data (Paginated)
@@ -156,8 +149,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.ResultData'
-        "400":
-          description: Bad Request
         "401":
           description: Unauthorized
       security:

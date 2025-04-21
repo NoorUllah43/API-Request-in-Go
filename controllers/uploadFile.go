@@ -18,8 +18,7 @@ import (
 // @Produce      json
 // @Param        file           formData  file    true  "Select file to upload"
 // @Security     ApiKeyAuth
-// @Success      200   	 {object}   models.ResultData
-// @Failure      400    
+// @Success      200   	 {object}   models.ResultData 
 // @Failure      401       
 // @Router       /uploadfile [post]
 func Filehandler(ctx fiber.Ctx) error {

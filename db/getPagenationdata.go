@@ -14,6 +14,8 @@ func GetPagenationData(userID int, limitdata string) ([]models.ResultData, error
 		return []models.ResultData{}, err
 	}
 
+	pagenum = (pagenum * 10) - 10
+
 	quray := fmt.Sprintf(`SELECT 
 	words, 
 	vowels, 
@@ -23,7 +25,7 @@ func GetPagenationData(userID int, limitdata string) ([]models.ResultData, error
 	specialcharacters,
 	symboles,
 	digits,
-	lines FROM result WHERE id=$1 LIMIT %v OFFSET 0`, pagenum)
+	lines FROM result WHERE id=$1 LIMIT 10 OFFSET %v`, pagenum)
 
 	var userData []models.ResultData
 

@@ -139,26 +139,16 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid page number",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.ResultData"
                             }
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "type": "string"
                         }
                     }
                 }
@@ -197,9 +187,6 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.ResultData"
                         }
-                    },
-                    "400": {
-                        "description": "Bad Request"
                     },
                     "401": {
                         "description": "Unauthorized"
